@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>四个vue例子|计数器|图片切换|记事本|天气查询</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript" charset="utf-8"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #ddd;
+        }
+
+        #cal {
+            margin: 30px auto;
+            width: 300px;
+            height: 40px;
+            box-shadow: 2px 2px rgb(1, 1, 1, 0.3);
+            background: #fff;
+            text-align: center;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #cal>button {
+            width: 100px;
+            height: 40px;
+            border: 0;
+            color: red;
+            font-size: 20px;
+            font-weight: 500;
+            outline: none;
+        }
+
+        #cal>span {
+            display: inline-block;
+            width: 100px;
+
+        }
+
+        button:hover {
+            background: rgb(204, 195, 195);
+        }
+
+        button:active {
+            background: rgba(180, 85, 85, 0.726);
+
+        }
+
+        #img-wrapper {
+            width: 800px;
+            margin: 30px auto;
+        }
+
+        #imgtab {
+            position: relative;
+            margin: 30px auto;
+            font-size: 30px;
+			width: 658px;
+        }
+
+        #imgtab img {
+            width: 100%;
+            height: 206px;
+        }
+
+        #imgtab>a {
+            position: absolute;
+            background: rgba(187, 169, 169, 0.78);
+            width: 40px;
+            height: 100px;
+            top: 52px;
+            color: #fff;
+            text-align: center;
+            line-height: 100px;
+            cursor: pointer;
+        }
+
+        #imgtab>a:hover {
+            background: rgba(187, 169, 169, 0.58);
+        }
+
+        #imgtab>a:nth-child(2) {
+            left: 0px;
+        }
+
+        #imgtab>a:nth-child(3) {
+            left: calc( 100% - 40px);
+        }
+
+        #todoapp {
+            width: 500px;
+            margin: 0 auto;
+        }
+
+        #todoapp>input {
+            width: 500px;
+            height: 50px;
+            font-size: 20px;
+            line-height: 50px;
+            border: none;
+            border-bottom: 2px solid #4bb91b;
+            text-indent: 14px;
+        }
+/* 
+        #todoapp>input:input-placeholder {
+            font-style: italic;
+            font-weight: 300;
+            color: gray;
+        } */
+
+        #todoapp>ul {
+            list-style: none;
+            background-color: #fff;
+            width: 500px;
+        }
+
+        #todoapp>ul>li {
+            height: 50px;
+            line-height: 50px;
+            border-bottom: 1px solid rgba(187, 169, 169, 0.78);
+            position: relative;
+        }
+
+        #todoapp .removebutton {
+            display: none;
+
+        }
+
+        #todoapp li:hover {
+            background-color: rgba(180, 223, 171, 0.78);
+        }
+
+        #todoapp li:hover>a {
+            display: inline-block;
+            position: absolute;
+            right: 10px;
+            font-size: 25px;
+            transition: color 0.2s ease-out;
+        }
+
+        #todoapp li a:hover {
+            color: #cc474c;
+            cursor: pointer;
+        }
+
+        #todoapp>ul>li>span {
+            margin: 0 10px;
+            font-size: 14px;
+        }
+
+        #notefoot {
+            background: rgba(29, 95, 15, 0.78);
+            height: 40px;
+            line-height: 40px;
+            padding: 0 10px;
+            color: #fff;
+            /* box-shadow: 0 2px rgba(211, 208, 208, 0.78); */
+
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #74c363,
+                0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px rgba(180, 223, 171, 0.78),
+                0 17px 2px -6px rgba(0, 0, 0, 0.2);
+        }
+        #notefoot>a{
+            cursor: pointer;
+        }
+        #inputgroup,
+        #maincity {
+            width: 600px;
+            margin: 5px auto;
+        }
+
+        #maincity>span {
+            color: rgba(16, 16, 16, 0.78);
+            font-size: 14px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        #inputgroup>input:first-child {
+            width: 500px;
+            height: 40px;
+            border: none;
+            text-indent: 16px;
+        }
+
+        #inputgroup>input:nth-child(2) {
+            height: 40px;
+            width: 100px;
+            background: rgba(6, 189, 245, 0.96);
+            color: #fff;
+            border: none;
+            vertical-align: top;
+        }
+
+        #cloudresult>ul {
+            list-style: none;
+            margin-top: 40px;
+			overflow: hidden;
+        }
+
+        #cloudresult>ul>li {
+            width: 150px;
+            line-height: 40px;
+            text-align: center;
+            float: left;
+            margin-bottom: 100px;
+        }
+
+        #cloudresult>ul>li>h2,
+        h2+p {
+            color: rgb(241, 154, 24);
+            font-weight: 700;
+        }
+
+        #cloudresult>ul>li>h2+p {
+            font-size: 13px;
+        }
+
+        #cloudresult>ul>li>p:last-child {
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="img-wrapper">
+        <h1 style="text-align: center;margin-top: 30px;">计数器</h1>
+        <div id="cal">
+            <button @click="sub">-</button><span>{{num}}</span><button @click="add">+</button>
+        </div>
+
+        <h1 style="text-align: center;margin-top: 30px;">图片切换</h1>
+        <!-- <div id="img-wrapper">
+        <div id="imgtab">
+            <img :src="imgsrc" />
+            <a class="left" v-show=isshowleft @click="leftnext"> left</a>
+            <a class="right" v-show="isshowright" @click="rightnext">right</a>
+        </div>
+    </div> -->
+        <div id="imgtab">
+            <img :src="imgArr[index]" />
+            <a class="left" v-show="index!=0" @click="leftnext"> &lt</a>
+            <a class="right" v-show="index<imgArr.length-1" @click="rightnext">&gt</a>
+        </div>
+
+
+        <h1 style="text-align: center;margin: 30px 0;">记事本</h1>
+        <div id="todoapp">
+            <input type="text" placeholder="添加事项" v-model="inputvalue" @keyup.enter="add" />
+            <ul>
+                <li v-for="(item,index) in listarr">
+                    <span>{{index+1}}.</span>
+                    <label>{{item}}</label>
+                    <a class="removebutton" @click="remove(index)">×</a>
+                </li>
+            </ul>
+            <div id="notefoot">
+                <span v-show="listarr.length!=0">共 <strong>{{listarr.length}}</strong> 条</span>
+                <a style="float: right;" @click="remove('all')" v-show="listarr.length!=0">清空</a>
+            </div>
+        </div>
+
+        <h1 style="text-align: center;margin: 30px 0;">网络请求应用-云知道</h1>
+        <div id="querycloud">
+            <div id="inputgroup">
+                <input type="text" placeholder="输入城市" v-model="inputcity" @keyup.enter="search" /><input type="button"
+                    value="搜索" @click="search" />
+            </div>
+            <div id="maincity">
+                <span @click="changecity('北京')">北京</span>
+                <span @click="changecity('上海')">上海</span>
+                <span @click="changecity('广州')">广州</span>
+                <span @click="changecity('深圳')">深圳</span>
+            </div>
+            <div id="cloudresult">
+                <ul>
+                    <li v-for="item in cloudarr">
+                        <h2>{{item.type}}</h2>
+                        <p>{{item.low}}~{{item.high}}</p>
+                        <p>{{item.date}}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        var ap = new Vue({
+            el: "#cal",
+            data: {
+                num: 1,
+            },
+            methods: {
+                sub: function () {
+                    this.num--;
+                    if (this.num < 1)
+                        alert("不能再少了");
+                },
+                add: function () {
+                    this.num++;
+                    if (this.num > 9)
+                        alert("不能再多了");
+                }
+            }
+
+        })
+        var ap2 = new Vue({
+            el: "#imgtab",
+            data: {
+                imgArr: [
+                    './img/1.jpg',
+                    './img/2.jpg',
+                    './img/3.jpg',
+                    './img/4.jpg'
+                ],
+                index: 0,
+            },
+            methods: {
+                leftnext: function () {
+                    this.index--;
+                },
+                rightnext: function () {
+                    this.index++;
+                }
+            }
+        });
+        /*
+        var count = 1;
+        var ap2 = new Vue({
+            el: "#imgtab",
+            data: {
+                isshowleft: false,
+                isshowright: true,
+                imgsrc: "./img/" + count + ".jpg"
+            },
+            methods: {
+                leftnext: function () {
+                    count--;
+                    if (count == 1) {
+                        this.isshowleft = false;
+                        this.imgsrc = "./img/" + count + ".jpg";
+                    } else if (count < 0) {
+                        this.imgsrc = "./img/1.jpg";
+                    } else {
+                        this.isshowleft = true;
+                        this.isshowright = true;
+                        this.imgsrc = "./img/" + count + ".jpg";
+                    }
+                },
+                rightnext: function () {
+                    count++;        
+                    if (count == 4) {
+                        this.isshowright = false;
+                        this.imgsrc = "./img/" + count + ".jpg";
+                    } else if (count > 4) {
+                        this.imgsrc = "./img/4.jpg";
+                    } else {
+                        this.isshowleft = true;
+                        this.isshowright = true;
+                        this.imgsrc = "./img/" + count + ".jpg";
+                    }
+                }
+            }
+        })*/
+        var ap3 = new Vue({
+            el: "#todoapp",
+            data: {
+                listarr: ["瞎写写", "吃饭饭", "睡觉觉"],
+                inputvalue: "好好学习，天天向上",
+            },
+            methods: {
+                add: function () {
+                    this.listarr.push(this.inputvalue);
+                },
+                remove: function (para) {
+                    if (para == "all") {
+                        this.listarr = [];
+                    }
+                    this.listarr.splice(para, 1)
+                }
+            }
+        });
+        var ap4 = new Vue({
+            el: "#querycloud",
+            data: {
+                cloudarr: [],
+                inputcity: "北京"
+            },
+            methods: {
+
+
+                search: function () {
+                    var that = this;
+                    axios.get("http://wthrcdn.etouch.cn/weather_mini?city=" + that.inputcity)
+                        .then(function (response) {
+                            console.log(response);
+                            that.cloudarr = response.data.data.forecast;
+                        })
+                        .catch(function (err) {
+                            console.log(err);
+                        })
+                },
+                changecity: function (city) {
+                    this.inputcity = city;
+                    this.search();
+                }
+
+            }
+        });
+    </script>
+</body>
+
+</html>
